@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<head>
+    <title>Form</title>
+</head>
+<body>
+    <h1>HTML Forms</h1>
+
+    <form 
+    action="https://formspree.io/f/mldjaakd"
+    method="POST">
+        <fieldset>
+            <legend>Personal Details</legend>
+            <label for="name">Full Name:</label>
+            <input type="text" id="name" name="name" placeholder="yash" required><br><br>
+
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob"><br><br>
+
+            <label for="gender">Gender:</label>
+            <input type="radio" id="male" name="gender" value="male"> Male
+            <input type="radio" id="female" name="gender" value="female"> Female
+            <input type="radio" id="other" name="gender" value="other"> Other
+        </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Contact Details</legend>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" placeholder="yashajaymagar10@gmail.com" required><br><br>
+
+        <label for="phone">Phone:</label>
+        <input type="tel" id="phone" name="phone" pattern="[0-9]{10}" placeholder="10-digit number" required><br><br>
+
+        <label for="address">Address:</label><br>
+        <textarea id="address" name="address" rows="4" cols="30" placeholder="Enter thee vaild address with vaild pincode"></textarea>
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Educational Details</legend>
+        <label for="qualification">Highest Qualification:</label>
+        <select id="qualification" name="qualification">
+            <option value="10th">10th</option>
+            <option value="12th">12th</option>
+            <option value="diploma">Diploma</option>
+            <option value="bachelor">Bachelor's Degree</option>
+            <option value="master">Master's Degree</option>
+        </select><br><br>
+
+        <label for="college">College/Institute Name:</label>
+        <input type="text" id="college" name="college" placeholder="GP Awasari"><br><br>
+
+        <label for="year">Year of Passing:</label>
+        <input type="number" id="year" name="year" min="2000" max="2030" Placeholder="2027">
+    </fieldset>
+
+    <br>
+
+    <fieldset>
+        <legend>Reviaws or Comments</legend>
+        <label for="rating">Rate our Website:</label><br>
+        <input type="radio" name="rating" value="1"> 1 <br>
+        <input type="radio" name="rating" value="2"> 2 <br>
+        <input type="radio" name="rating" value="3"> 3 <br>
+        <input type="radio" name="rating" value="4"> 4 <br>
+        <input type="radio" name="rating" value="5"> 5 <br><br>
+
+        <label for="comments">Your Feedback:</label><br>
+        <textarea id="comments" name="comments" rows="4" cols="30"></textarea>
+    </fieldset>
+
+    <br>
+
+    <button type="submit">Submit</button>
+    <button type="reset">Reset</button>
+</form>      
+
+</body>
+</html>

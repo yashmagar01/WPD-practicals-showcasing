@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Practical No. 22(CSS)</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        h1{
+            text-align: center;
+        }
+        li {
+            font-size: 20px;
+            text-align: justify;
+        }
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <div class="question">
+        <h1>VII. Exercise </h1>
+        <ol type="1">
+            <li>Create a web page for demonstration of CSS by applying internal style, external and 
+                inline style</li>
+        </ol>
+    </div>
+
+    <div class="inline_css">
+        <h2 style="border: 2px solid blueviolet; padding: 15px; text-align: center;">Inline CSS</h2>
+        <p>Inline styles are applied to specific HTML elements. The HTML attribute style is
+            used to define rules that only apply to that specific element. Here’s a look at the
+            syntax for writing inline styles.</p>
+    </div>
+
+    <div class ="Internal_css">
+        <h2 style="border: 2px solid greenyellow; padding: 15px; text-align: center;">Internal CSS</h2>
+        <p>The earlier examples in this tutorial make use of internal stylesheets. An internal 
+            stylesheet is a block of CSS added to an HTML document head element. 
+            The style element is used between the opening and closing head tags, and all CSS 
+            declarations are added between the style tags.</p>
+        <div class="Internal_css">
+            <img src="example_internal_css.png" alt="example_internal_css">
+        </div>
+    </div>
+
+    <div class="External_css">
+        <h2 style="border: 2px solid red; padding: 15px; text-align: center;">External CSS</h2>
+        <p>External stylesheets are documents containing nothing other than CSS statements. The 
+            rules defined in the document are linked to one or more HTML documents by using 
+            the link tag within the head element of the HTML document.</p>
+        <br>
+        <div class="External_css">
+            <img src="example_external_css.png" alt="example_external_css">
+        </div>
+    </div>
+</body>
+</html>
