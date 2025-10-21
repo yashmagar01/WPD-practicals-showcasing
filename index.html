@@ -19,7 +19,12 @@
     <nav class="navbar">
         <div class="nav-container">
             <a href="#" class="nav-logo">WPD Showcasing</a>
-            <ul class="nav-links">
+            <button class="mobile-menu-toggle" aria-label="Toggle mobile menu" id="mobileMenuToggle">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#about">About</a></li>
                 <li><a href="#practicals">Projects</a></li>
                 <li><a href="#contact">Contact</a></li>
@@ -409,7 +414,16 @@
             }
         }
         
-        const particles = Array.from({ length: 100 }, () => new Particle());
+        // Adjust particle count based on screen size for better performance
+        const getOptimalParticleCount = () => {
+            const width = window.innerWidth;
+            if (width < 480) return 30;
+            if (width < 768) return 50;
+            if (width < 1024) return 75;
+            return 100;
+        };
+        
+        const particles = Array.from({ length: getOptimalParticleCount() }, () => new Particle());
         
         function animate() {
             ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
@@ -425,9 +439,26 @@
         
         animate();
         
+        // Debounced resize handler for better performance
+        let resizeTimeout;
         window.addEventListener('resize', () => {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(() => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                
+                // Adjust particle count based on screen size
+                const optimalParticleCount = Math.floor((width * height) / 20000);
+                const currentCount = particles.length;
+                
+                if (optimalParticleCount < currentCount) {
+                    particles.splice(optimalParticleCount);
+                } else if (optimalParticleCount > currentCount) {
+                    for (let i = currentCount; i < optimalParticleCount && i < 150; i++) {
+                        particles.push(new Particle());
+                    }
+                }
+            }, 150);
         });
 
         // Navbar scroll effect
@@ -482,6 +513,41 @@
             cardObserver.observe(card);
         });
 
+        // Mobile menu toggle
+        const mobileMenuToggle = document.getElementById('mobileMenuToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        if (mobileMenuToggle) {
+            mobileMenuToggle.addEventListener('click', function() {
+                this.classList.toggle('active');
+                navLinks.classList.toggle('active');
+                document.body.classList.toggle('menu-open');
+            });
+        }
+
+        // Close mobile menu when clicking on a link
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function() {
+                if (mobileMenuToggle && mobileMenuToggle.classList.contains('active')) {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            });
+        });
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(event) {
+            if (mobileMenuToggle && navLinks) {
+                const isClickInsideNav = navLinks.contains(event.target) || mobileMenuToggle.contains(event.target);
+                if (!isClickInsideNav && navLinks.classList.contains('active')) {
+                    mobileMenuToggle.classList.remove('active');
+                    navLinks.classList.remove('active');
+                    document.body.classList.remove('menu-open');
+                }
+            }
+        });
+
         // Smooth scrolling for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -498,42 +564,54 @@
             });
         });
 
-        // Parallax effect for hero section
-        window.addEventListener('scroll', () => {
-            const scrolled = window.pageYOffset;
-            const heroContent = document.querySelector('.hero-content');
-            const heroGlow = document.querySelector('.hero-glow');
-            
-            if (heroContent && scrolled < window.innerHeight) {
-                heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-                heroContent.style.opacity = 1 - scrolled / 700;
-            }
-            
-            if (heroGlow && scrolled < window.innerHeight) {
-                heroGlow.style.transform = `translate(-50%, -50%) scale(${1 + scrolled * 0.001})`;
-            }
-        });
+        // Parallax effect for hero section (desktop only for better performance)
+        if (window.matchMedia('(min-width: 768px)').matches) {
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        const scrolled = window.pageYOffset;
+                        const heroContent = document.querySelector('.hero-content');
+                        const heroGlow = document.querySelector('.hero-glow');
+                        
+                        if (heroContent && scrolled < window.innerHeight) {
+                            heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+                            heroContent.style.opacity = 1 - scrolled / 700;
+                        }
+                        
+                        if (heroGlow && scrolled < window.innerHeight) {
+                            heroGlow.style.transform = `translate(-50%, -50%) scale(${1 + scrolled * 0.001})`;
+                        }
+                        
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+        }
 
-        // Mouse parallax effect for practical cards
-        document.querySelectorAll('.practical-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
+        // Mouse parallax effect for practical cards (desktop only)
+        if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+            document.querySelectorAll('.practical-card').forEach(card => {
+                card.addEventListener('mousemove', (e) => {
+                    const rect = card.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    
+                    const centerX = rect.width / 2;
+                    const centerY = rect.height / 2;
+                    
+                    const rotateX = (y - centerY) / 20;
+                    const rotateY = (centerX - x) / 20;
+                    
+                    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+                });
                 
-                const centerX = rect.width / 2;
-                const centerY = rect.height / 2;
-                
-                const rotateX = (y - centerY) / 20;
-                const rotateY = (centerX - x) / 20;
-                
-                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+                card.addEventListener('mouseleave', () => {
+                    card.style.transform = '';
+                });
             });
-            
-            card.addEventListener('mouseleave', () => {
-                card.style.transform = '';
-            });
-        });
+        }
 
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
