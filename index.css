@@ -1058,6 +1058,15 @@ body {
     color: var(--text-secondary);
     text-decoration: none;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+}
+
+.social-link svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    display: block;
+    margin: auto;
 }
 
 .social-link:hover {
