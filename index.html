@@ -259,8 +259,66 @@
         </div>
     </section>
 
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-badge">Get In Touch</span>
+                <h2 class="section-title">Contact Me</h2>
+                <p class="section-subtitle">Have a question or want to work together? Feel free to reach out!</p>
+            </div>
+            <div class="contact-content">
+                <div class="contact-info fade-in">
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon">📧</div>
+                        <h4>Email</h4>
+                        <a href="mailto:yash.magar@example.com">yash.magar@example.com</a>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon">📱</div>
+                        <h4>Phone</h4>
+                        <a href="tel:+1234567890">+91 12345 67890</a>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon">📍</div>
+                        <h4>Location</h4>
+                        <p>Government Polytechnic Awasari</p>
+                    </div>
+                    <div class="contact-info-card">
+                        <div class="contact-info-icon">💼</div>
+                        <h4>GitHub</h4>
+                        <a href="https://github.com/yashmagar01" target="_blank" rel="noopener noreferrer">@yashmagar01</a>
+                    </div>
+                </div>
+                <div class="contact-form-wrapper fade-in">
+                    <form class="contact-form" id="contactForm">
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" id="name" name="name" required placeholder="Your Name">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" required placeholder="your.email@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Subject</label>
+                            <input type="text" id="subject" name="subject" required placeholder="What's this about?">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" required placeholder="Your message here..."></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
     <!-- Footer -->
-    <footer class="footer" id="contact">
+    <footer class="footer">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
@@ -480,6 +538,36 @@
         // Initialize
         document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('loading');
+        });
+
+        // Contact Form Handler (Basic - See README.md for production implementations)
+        document.getElementById('contactForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            
+            // Get form data
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const subject = document.getElementById('subject').value;
+            const message = document.getElementById('message').value;
+            
+            // Basic validation
+            if (!name || !email || !subject || !message) {
+                alert('Please fill in all fields');
+                return;
+            }
+            
+            // This is a placeholder - Replace with actual email service
+            // See README.md for implementation methods (FormSpree, EmailJS, etc.)
+            alert(`Thank you for your message, ${name}!\n\nThis is a demo form. To make it functional, please follow the instructions in README.md file.\n\nYour message:\nSubject: ${subject}\nEmail: ${email}`);
+            
+            // Reset form
+            this.reset();
+            
+            // In production, replace the above with one of these:
+            // - FormSpree: Add action="https://formspree.io/f/YOUR_ID" to form tag
+            // - EmailJS: Use emailjs.sendForm() method
+            // - Custom Backend: Use fetch() to send data to your server
+            // - See README.md for complete implementation examples
         });
     </script>
 </body>
