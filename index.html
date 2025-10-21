@@ -6,27 +6,29 @@
     <title>WPD Practicals Showcase | Yash Ajay Magar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-primary: #0a0a0a;
-            --bg-secondary: #111111;
-            --bg-tertiary: #1a1a1a;
-            --bg-card: #1e1e1e;
+            --bg-secondary: #0f0f0f;
+            --bg-tertiary: #151515;
+            --bg-card: #1a1a1a;
             --accent-primary: #6366f1;
             --accent-secondary: #8b5cf6;
             --accent-tertiary: #ec4899;
+            --accent-cyan: #06b6d4;
             --text-primary: #ffffff;
             --text-secondary: #a1a1aa;
             --text-muted: #71717a;
-            --border-primary: #2a2a2a;
-            --border-secondary: #3a3a3a;
+            --border-primary: #27272a;
+            --border-secondary: #3f3f46;
             --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
-            --gradient-bg: linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #1a1a1a 100%);
+            --gradient-mesh: linear-gradient(135deg, rgba(99, 102, 241, 0.1) 0%, rgba(139, 92, 246, 0.1) 50%, rgba(236, 72, 153, 0.1) 100%);
             --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.3), 0 2px 4px -2px rgb(0 0 0 / 0.3);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.4), 0 4px 6px -4px rgb(0 0 0 / 0.4);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.5), 0 8px 10px -6px rgb(0 0 0 / 0.5);
+            --shadow-glow: 0 0 40px rgba(99, 102, 241, 0.3);
         }
 
         * {
@@ -41,12 +43,99 @@
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--gradient-bg);
-            background-attachment: fixed;
+            background: var(--bg-primary);
             color: var(--text-primary);
             line-height: 1.6;
             overflow-x: hidden;
             min-height: 100vh;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1rem 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .navbar.scrolled {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border-primary);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.25rem;
+            font-weight: 700;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+
+        .nav-logo:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Canvas Background */
+        #canvas-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
         }
 
         .noise-overlay {
@@ -61,34 +150,32 @@
             z-index: -1;
         }
 
-        .floating-particles {
+        /* Mesh Gradient Background */
+        .mesh-gradient {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            z-index: -1;
+            z-index: -3;
+            background: 
+                radial-gradient(at 27% 37%, hsla(215, 98%, 61%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 97% 21%, hsla(255, 95%, 67%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 52% 99%, hsla(340, 95%, 67%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 10% 29%, hsla(197, 95%, 67%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 97% 96%, hsla(204, 95%, 67%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 33% 50%, hsla(280, 95%, 67%, 0.15) 0px, transparent 50%),
+                radial-gradient(at 79% 53%, hsla(343, 95%, 67%, 0.15) 0px, transparent 50%);
+            animation: meshShift 20s ease-in-out infinite;
         }
 
-        .particle {
-            position: absolute;
-            width: 2px;
-            height: 2px;
-            background: var(--accent-primary);
-            border-radius: 50%;
-            animation: float 20s infinite linear;
-        }
-
-        @keyframes float {
-            0% { transform: translateY(100vh) translateX(0px); opacity: 0; }
-            10% { opacity: 1; }
-            90% { opacity: 1; }
-            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        @keyframes meshShift {
+            0%, 100% { transform: scale(1) rotate(0deg); }
+            50% { transform: scale(1.1) rotate(5deg); }
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 2rem;
         }
@@ -101,28 +188,79 @@
             justify-content: center;
             position: relative;
             overflow: hidden;
+            padding-top: 80px;
         }
 
-        .hero::before {
-            content: '';
+        .hero-glow {
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-            animation: pulse 4s ease-in-out infinite;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(99, 102, 241, 0.2) 0%, transparent 70%);
+            animation: glowPulse 6s ease-in-out infinite;
+            pointer-events: none;
         }
 
-        @keyframes pulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
+        @keyframes glowPulse {
+            0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
+            50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
         }
 
         .hero-content {
             text-align: center;
             z-index: 2;
-            animation: fadeInUp 1s ease-out;
+            position: relative;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 2rem;
+            color: var(--accent-primary);
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 2rem;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .hero-badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-primary);
+            border-radius: 50%;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.2); }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5.5rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            animation: fadeInUp 1s ease-out 0.2s both;
+        }
+
+        .hero-gradient-text {
+            display: block;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         @keyframes fadeInUp {
@@ -136,22 +274,26 @@
             }
         }
 
-        .hero h1 {
-            font-size: clamp(2.5rem, 8vw, 4.5rem);
-            font-weight: 700;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            line-height: 1.2;
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .hero .subtitle {
             font-size: clamp(1.1rem, 2.5vw, 1.5rem);
             color: var(--text-secondary);
-            margin-bottom: 2rem;
+            margin-bottom: 3rem;
             font-weight: 400;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            animation: fadeInUp 1s ease-out 0.4s both;
         }
 
         .hero-cta {
@@ -159,17 +301,18 @@
             gap: 1rem;
             justify-content: center;
             flex-wrap: wrap;
-            margin-top: 2rem;
+            margin-top: 3rem;
+            animation: fadeInUp 1s ease-out 0.6s both;
         }
 
         .btn {
             padding: 1rem 2rem;
             border: none;
-            border-radius: 0.5rem;
+            border-radius: 0.75rem;
             font-size: 1rem;
-            font-weight: 500;
+            font-weight: 600;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             text-decoration: none;
             display: inline-flex;
             align-items: center;
@@ -178,133 +321,238 @@
             overflow: hidden;
         }
 
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s ease;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
         .btn-primary {
             background: var(--gradient-primary);
             color: white;
-            box-shadow: var(--shadow-lg);
+            box-shadow: var(--shadow-lg), var(--shadow-glow);
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-xl);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-xl), 0 0 60px rgba(99, 102, 241, 0.4);
         }
 
         .btn-secondary {
-            background: transparent;
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-primary);
-            border: 2px solid var(--border-secondary);
+            border: 1px solid var(--border-secondary);
+            backdrop-filter: blur(10px);
         }
 
         .btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.1);
             border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            transform: translateY(-2px);
+            transform: translateY(-3px);
         }
 
-        /* About Section */
-        .about {
+        /* Features Section */
+        .features {
             padding: 8rem 0;
             background: var(--bg-secondary);
             position: relative;
         }
 
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid var(--border-primary);
+            border-radius: 1rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px);
+            background: rgba(255, 255, 255, 0.05);
+            border-color: var(--accent-primary);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(99, 102, 241, 0.2);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-icon {
+            width: 3rem;
+            height: 3rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-primary);
+            border-radius: 0.75rem;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .feature-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .feature-description {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 0;
+            background: var(--bg-primary);
+            position: relative;
+        }
+
         .section-header {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 5rem;
+        }
+
+        .section-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: rgba(99, 102, 241, 0.1);
+            border: 1px solid rgba(99, 102, 241, 0.2);
+            border-radius: 2rem;
+            color: var(--accent-primary);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .section-title {
-            font-size: clamp(2rem, 4vw, 3rem);
-            font-weight: 600;
-            margin-bottom: 1rem;
-            background: var(--gradient-primary);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 800;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #ffffff 0%, #a1a1aa 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            line-height: 1.2;
+            letter-spacing: -0.02em;
         }
 
         .section-subtitle {
-            font-size: 1.1rem;
+            font-size: 1.25rem;
             color: var(--text-secondary);
-            max-width: 600px;
+            max-width: 700px;
             margin: 0 auto;
+            line-height: 1.6;
         }
 
         .about-content {
             display: grid;
-            grid-template-columns: 1fr 300px;
-            gap: 4rem;
+            grid-template-columns: 1fr 350px;
+            gap: 5rem;
             align-items: center;
         }
 
-        .about-text {
-            animation: slideInLeft 0.8s ease-out 0.2s both;
-        }
-
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
         .about-text h3 {
-            font-size: 1.8rem;
+            font-size: 2rem;
             margin-bottom: 1.5rem;
             color: var(--text-primary);
+            font-weight: 700;
         }
 
         .about-text p {
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             color: var(--text-secondary);
-            font-size: 1.05rem;
+            font-size: 1.1rem;
+            line-height: 1.8;
         }
 
         .profile-card {
-            animation: slideInRight 0.8s ease-out 0.4s both;
-        }
-
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(50px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+            position: relative;
         }
 
         .profile-container {
             position: relative;
-            border-radius: 1rem;
+            border-radius: 1.5rem;
             overflow: hidden;
             background: var(--bg-card);
             padding: 2rem;
             box-shadow: var(--shadow-xl);
+            border: 1px solid var(--border-primary);
+            transition: all 0.4s ease;
+        }
+
+        .profile-container:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-xl), 0 0 60px rgba(99, 102, 241, 0.2);
         }
 
         .profile-pic {
             width: 100%;
-            height: 300px;
-            border-radius: 0.5rem;
+            height: 350px;
+            border-radius: 1rem;
             overflow: hidden;
             position: relative;
+        }
+
+        .profile-pic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, transparent 0%, rgba(0, 0, 0, 0.6) 100%);
+            z-index: 1;
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .profile-container:hover .profile-pic::before {
+            opacity: 1;
         }
 
         .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.3s ease;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .profile-container:hover .profile-pic img {
-            transform: scale(1.05);
+            transform: scale(1.08);
         }
 
         .profile-info {
@@ -313,56 +561,54 @@
 
         .profile-name {
             font-size: 1.5rem;
-            font-weight: 600;
+            font-weight: 700;
             color: var(--text-primary);
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .profile-details {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem;
+            gap: 0.75rem;
         }
 
         .profile-detail {
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.75rem;
             color: var(--text-secondary);
-            font-size: 0.9rem;
+            font-size: 0.95rem;
+        }
+
+        .profile-detail span:first-child {
+            font-size: 1.25rem;
         }
 
         /* Practicals Section */
         .practicals {
             padding: 8rem 0;
-            background: var(--bg-primary);
+            background: var(--bg-secondary);
+            position: relative;
         }
 
         .practicals-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
             gap: 2rem;
-            margin-top: 4rem;
+            margin-top: 5rem;
         }
 
         .practical-card {
-            background: var(--bg-card);
-            border-radius: 1rem;
-            padding: 2rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
             border: 1px solid var(--border-primary);
-            transition: all 0.3s ease;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
             overflow: hidden;
             opacity: 0;
             transform: translateY(30px);
-            animation: fadeInUp 0.6s ease-out forwards;
         }
-
-        .practical-card:nth-child(1) { animation-delay: 0.1s; }
-        .practical-card:nth-child(2) { animation-delay: 0.2s; }
-        .practical-card:nth-child(3) { animation-delay: 0.3s; }
-        .practical-card:nth-child(4) { animation-delay: 0.4s; }
-        .practical-card:nth-child(5) { animation-delay: 0.5s; }
 
         .practical-card::before {
             content: '';
@@ -374,72 +620,106 @@
             background: var(--gradient-primary);
             transform: scaleX(0);
             transform-origin: left;
-            transition: transform 0.3s ease;
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .practical-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: radial-gradient(circle at top right, rgba(99, 102, 241, 0.1) 0%, transparent 60%);
+            opacity: 0;
+            transition: opacity 0.4s ease;
         }
 
         .practical-card:hover {
-            transform: translateY(-5px);
-            box-shadow: var(--shadow-xl);
+            transform: translateY(-10px) scale(1.02);
+            background: rgba(255, 255, 255, 0.05);
             border-color: var(--accent-primary);
+            box-shadow: var(--shadow-xl), 0 0 40px rgba(99, 102, 241, 0.2);
         }
 
         .practical-card:hover::before {
             transform: scaleX(1);
         }
 
+        .practical-card:hover::after {
+            opacity: 1;
+        }
+
         .practical-number {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 3rem;
-            height: 3rem;
+            width: 3.5rem;
+            height: 3.5rem;
             background: var(--gradient-primary);
-            border-radius: 50%;
-            font-weight: 600;
-            font-size: 1.2rem;
-            margin-bottom: 1rem;
+            border-radius: 1rem;
+            font-weight: 700;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            z-index: 1;
         }
 
         .practical-title {
-            font-size: 1.2rem;
-            font-weight: 500;
+            font-size: 1.25rem;
+            font-weight: 600;
             color: var(--text-primary);
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
             line-height: 1.4;
+            position: relative;
+            z-index: 1;
         }
 
         .practical-link {
             color: var(--accent-primary);
             text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s ease;
+            font-weight: 600;
+            transition: all 0.3s ease;
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .practical-link::after {
+            content: '→';
+            transition: transform 0.3s ease;
         }
 
         .practical-link:hover {
             color: var(--accent-tertiary);
         }
 
+        .practical-link:hover::after {
+            transform: translateX(4px);
+        }
+
         /* Footer */
         .footer {
-            background: var(--bg-secondary);
-            padding: 4rem 0 2rem;
+            background: var(--bg-primary);
+            padding: 5rem 0 2rem;
             border-top: 1px solid var(--border-primary);
+            position: relative;
         }
 
         .footer-content {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 3rem;
-            margin-bottom: 3rem;
+            gap: 4rem;
+            margin-bottom: 4rem;
         }
 
         .footer-section h4 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 1rem;
+            font-size: 1.25rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
             color: var(--text-primary);
         }
 
@@ -447,8 +727,9 @@
         .footer-section a {
             color: var(--text-secondary);
             text-decoration: none;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.75rem;
             transition: color 0.3s ease;
+            display: block;
         }
 
         .footer-section a:hover {
@@ -460,49 +741,92 @@
             padding-top: 2rem;
             border-top: 1px solid var(--border-primary);
             color: var(--text-muted);
+            font-size: 0.9rem;
         }
 
         .social-links {
             display: flex;
             gap: 1rem;
-            margin-top: 1rem;
+            margin-top: 1.5rem;
         }
 
         .social-link {
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            width: 2.5rem;
-            height: 2.5rem;
-            background: var(--bg-card);
+            width: 2.75rem;
+            height: 2.75rem;
+            background: rgba(255, 255, 255, 0.05);
             border: 1px solid var(--border-primary);
-            border-radius: 50%;
+            border-radius: 0.75rem;
             color: var(--text-secondary);
             text-decoration: none;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .social-link:hover {
-            background: var(--accent-primary);
+            background: var(--gradient-primary);
             color: white;
-            transform: translateY(-2px);
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        /* Scroll Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1), transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Responsive Design */
+        @media (max-width: 1024px) {
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .practicals-grid {
+                grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            }
+        }
+
         @media (max-width: 768px) {
-            .container {
-                padding: 0 1rem;
+            .container, .nav-container {
+                padding: 0 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-links a {
+                font-size: 0.85rem;
+            }
+
+            .hero {
+                padding-top: 100px;
             }
 
             .hero-cta {
                 flex-direction: column;
-                align-items: center;
+                width: 100%;
+                max-width: 300px;
+                margin-left: auto;
+                margin-right: auto;
             }
 
-            .about-content {
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .features-grid {
                 grid-template-columns: 1fr;
-                gap: 3rem;
-                text-align: center;
             }
 
             .practicals-grid {
@@ -511,26 +835,37 @@
 
             .footer-content {
                 grid-template-columns: 1fr;
+                gap: 2rem;
                 text-align: center;
+            }
+
+            .social-links {
+                justify-content: center;
             }
         }
 
-        /* Intersection Observer Animations */
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 0.6s ease-out;
+        @media (max-width: 480px) {
+            .container, .nav-container {
+                padding: 0 1rem;
+            }
+
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 2rem;
+            }
+
+            .practical-card {
+                padding: 2rem;
+            }
         }
 
-        .animate-on-scroll.animate {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* Loading Animation */
+        /* Loading States */
         .loading {
             opacity: 0;
-            animation: fadeIn 1s ease-out forwards;
+            animation: fadeIn 0.8s ease-out forwards;
         }
 
         @keyframes fadeIn {
@@ -541,28 +876,73 @@
     </style>
 </head>
 <body>
+    <!-- Canvas Background -->
+    <canvas id="canvas-background"></canvas>
+    <div class="mesh-gradient"></div>
     <div class="noise-overlay"></div>
-    <div class="floating-particles">
-        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
-        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
-        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
-        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
-        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
-        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
-        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
-        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
-        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
-    </div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">WPD Portfolio</a>
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#practicals">Projects</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
 
     <!-- Hero Section -->
     <section class="hero">
+        <div class="hero-glow"></div>
         <div class="container">
             <div class="hero-content">
-                <h1>WPD Practicals<br>Showcase</h1>
-                <p class="subtitle">A journey through web development fundamentals<br>by Yash Ajay Magar</p>
+                <div class="hero-badge">
+                    <span class="hero-badge-dot"></span>
+                    Web Development Showcase
+                </div>
+                <h1>
+                    Building the Future
+                    <span class="hero-gradient-text">One Page at a Time</span>
+                </h1>
+                <p class="subtitle">A comprehensive collection of web development practicals showcasing modern design principles, responsive layouts, and cutting-edge technologies.</p>
                 <div class="hero-cta">
-                    <a href="#practicals" class="btn btn-primary">View Practicals</a>
+                    <a href="#practicals" class="btn btn-primary">Explore Projects</a>
                     <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features">
+        <div class="container">
+            <div class="section-header fade-in">
+                <span class="section-badge">Why Choose This</span>
+                <h2 class="section-title">Built with Excellence</h2>
+                <p class="section-subtitle">Every project demonstrates best practices in modern web development</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">🎨</div>
+                    <h3 class="feature-title">Modern Design</h3>
+                    <p class="feature-description">Sleek, contemporary interfaces that prioritize user experience and visual appeal.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">Fully Responsive</h3>
+                    <p class="feature-description">Optimized for all devices, from mobile phones to large desktop displays.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">⚡</div>
+                    <h3 class="feature-title">Performance First</h3>
+                    <p class="feature-description">Fast loading times and smooth animations for the best user experience.</p>
+                </div>
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">♿</div>
+                    <h3 class="feature-title">Accessible</h3>
+                    <p class="feature-description">Built with accessibility in mind, ensuring everyone can use the sites.</p>
                 </div>
             </div>
         </div>
@@ -571,18 +951,19 @@
     <!-- About Section -->
     <section class="about" id="about">
         <div class="container">
-            <div class="section-header animate-on-scroll">
-                <h2 class="section-title">About Me</h2>
-                <p class="section-subtitle">Get to know the developer behind these practical projects</p>
+            <div class="section-header fade-in">
+                <span class="section-badge">Get to Know Me</span>
+                <h2 class="section-title">About the Developer</h2>
+                <p class="section-subtitle">Passionate about creating exceptional web experiences</p>
             </div>
             <div class="about-content">
-                <div class="about-text">
+                <div class="about-text fade-in">
                     <h3>Crafting Digital Experiences</h3>
                     <p>Hi, I'm <strong>Yash Ajay Magar</strong>, a Diploma in Computer Engineering student at Government Polytechnic Awasari. I'm passionate about web development and constantly exploring new technologies to create meaningful digital experiences.</p>
                     <p>This showcase represents my journey through Web Page Designing (WPD) practicals, where I've learned everything from basic HTML structure to advanced CSS styling and responsive design principles.</p>
                     <p>Each project demonstrates a different aspect of web development, from semantic markup and accessibility to modern styling techniques and user experience considerations.</p>
                 </div>
-                <div class="profile-card">
+                <div class="profile-card fade-in">
                     <div class="profile-container">
                         <div class="profile-pic">
                             <img src="yash.jpg" alt="Yash Ajay Magar - Computer Engineering Student">
@@ -613,177 +994,270 @@
     <!-- Practicals Section -->
     <section class="practicals" id="practicals">
         <div class="container">
-            <div class="section-header animate-on-scroll">
+            <div class="section-header fade-in">
+                <span class="section-badge">Portfolio</span>
                 <h2 class="section-title">Practical Projects</h2>
                 <p class="section-subtitle">Explore my collection of web development practicals covering HTML, CSS, and modern web technologies</p>
             </div>
-            <div class="practicals-grid">
+            <div class="practicals-grid" id="practicals-grid">
                 <div class="practical-card">
                     <div class="practical-number">01</div>
                     <h3 class="practical-title">Work with Basic HTML</h3>
-                    <a href="pr1.html" class="practical-link">View Project →</a>
+                    <a href="pr1.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">02</div>
                     <h3 class="practical-title">Use of Heading Tags in Web Page</h3>
-                    <a href="pr2.html" class="practical-link">View Project →</a>
+                    <a href="pr2.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">03</div>
                     <h3 class="practical-title">Work on Paragraph in Web Page</h3>
-                    <a href="pr3.html" class="practical-link">View Project →</a>
+                    <a href="pr3.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">04</div>
                     <h3 class="practical-title">Work with Block Level Tags in Web Page</h3>
-                    <a href="pr4.html" class="practical-link">View Project →</a>
+                    <a href="pr4.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">05</div>
                     <h3 class="practical-title">Work with Text Level Tags in Web Page</h3>
-                    <a href="pr5.html" class="practical-link">View Project →</a>
+                    <a href="pr5.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">06</div>
                     <h3 class="practical-title">Implement the Border Properties in Web Page</h3>
-                    <a href="pr6.html" class="practical-link">View Project →</a>
+                    <a href="pr6.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">07</div>
                     <h3 class="practical-title">Use of Special Characters in Web Page</h3>
-                    <a href="pr7.html" class="practical-link">View Project →</a>
+                    <a href="pr7.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">08</div>
                     <h3 class="practical-title">Work with Ordered and Unordered Lists</h3>
-                    <a href="pr8.html" class="practical-link">View Project →</a>
+                    <a href="pr8.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">09</div>
                     <h3 class="practical-title">Create a Web Page to Use Different Types of Lists</h3>
-                    <a href="pr9.html" class="practical-link">View Project →</a>
+                    <a href="pr9.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">10</div>
                     <h3 class="practical-title">Work on HTML Web Page Link</h3>
-                    <a href="pr10.html" class="practical-link">View Project →</a>
+                    <a href="pr10.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">11</div>
                     <h3 class="practical-title">Use of Links in Web Page</h3>
-                    <a href="pr11.html" class="practical-link">View Project →</a>
+                    <a href="pr11.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">12</div>
                     <h3 class="practical-title">Use of Links with Images in Web Page</h3>
-                    <a href="pr12.html" class="practical-link">View Project →</a>
+                    <a href="pr12.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">13</div>
                     <h3 class="practical-title">Use of Colors for Links in Web Page</h3>
-                    <a href="pr13.html" class="practical-link">View Project →</a>
+                    <a href="pr13.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">14</div>
                     <h3 class="practical-title">Insert Image on Web Page Foreground and Background</h3>
-                    <a href="pr14.html" class="practical-link">View Project →</a>
+                    <a href="pr14.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">15</div>
                     <h3 class="practical-title">Insert Image with Hyperlink and Set Image Width & Height</h3>
-                    <a href="pr15.html" class="practical-link">View Project →</a>
+                    <a href="pr15.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">16</div>
                     <h3 class="practical-title">Work with Different Background Properties in Web Page</h3>
-                    <a href="pr16.html" class="practical-link">View Project →</a>
+                    <a href="pr16.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">17</div>
                     <h3 class="practical-title">Work on HTML Table in Web Page</h3>
-                    <a href="pr17.html" class="practical-link">View Project →</a>
+                    <a href="pr17.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">18</div>
                     <h3 class="practical-title">Create Table Within Table and Insert Images</h3>
-                    <a href="pr18.html" class="practical-link">View Project →</a>
+                    <a href="pr18.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">19</div>
                     <h3 class="practical-title">Work on Row and Column Attributes of Table</h3>
-                    <a href="pr19.html" class="practical-link">View Project →</a>
+                    <a href="pr19.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">20</div>
                     <h3 class="practical-title">These practicals will upload soon. wait for it !</h3>
-                    <a href="#" class="practical-link">Coming Soon →</a>
+                    <a href="#" class="practical-link">Coming Soon</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">21</div>
                     <h3 class="practical-title">Create Forms in HTML</h3>
-                    <a href="pr21.html" class="practical-link">View Project →</a>
+                    <a href="pr21.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">22</div>
                     <h3 class="practical-title">Create CSS by applying style sheets</h3>
-                    <a href="pr22.html" class="practical-link">View Project →</a>
+                    <a href="pr22.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">23</div>
                     <h3 class="practical-title">Work on RWD</h3>
-                    <a href="pr23.html" class="practical-link">View Project →</a>
+                    <a href="pr23.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">24</div>
                     <h3 class="practical-title">Hosting of website</h3>
-                    <a href="pr24.html" class="practical-link">View Project →</a>
+                    <a href="pr24.html" class="practical-link">View Project</a>
                 </div>
                 <div class="practical-card">
                     <div class="practical-number">25</div>
                     <h3 class="practical-title">Create a website to represent a portfolio</h3>
-                    <a href="pr25.html" class="practical-link">View Project →</a>
+                    <a href="pr25.html" class="practical-link">View Project</a>
                 </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer class="footer">
+    <footer class="footer" id="contact">
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
                     <h4>WPD Practicals</h4>
                     <p>A comprehensive collection of web development practical projects showcasing HTML, CSS, and modern web technologies.</p>
-                </div>
-                <div class="footer-section">
-                    <h4>Quick Links</h4>
-                    <p><a href="#about">About Me</a></p>
-                    <p><a href="#practicals">Practicals</a></p>
-                    <p><a href="mailto:yash.magar@example.com">Contact</a></p>
-                </div>
-                <div class="footer-section">
-                    <h4>Connect</h4>
                     <div class="social-links">
                         <a href="https://github.com/yashmagar01" class="social-link" title="GitHub">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
                             </svg>
                         </a>
                         <a href="#" class="social-link" title="Twitter">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
                             </svg>
                         </a>
                     </div>
                 </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <a href="#about">About Me</a>
+                    <a href="#practicals">Practicals</a>
+                    <a href="mailto:yash.magar@example.com">Contact</a>
+                </div>
+                <div class="footer-section">
+                    <h4>Student Info</h4>
+                    <p><strong>Yash Ajay Magar</strong></p>
+                    <p>Roll No: 24CO137</p>
+                    <p>Government Polytechnic Awasari</p>
+                </div>
             </div>
             <div class="footer-bottom">
-                <p>&copy; 2025 Yash Ajay Magar | Government Polytechnic Awasari</p>
+                <p>&copy; 2025 Yash Ajay Magar | Built with passion and dedication</p>
             </div>
         </div>
     </footer>
 
     <script>
+        // Canvas Background Animation (Lightweight 3D particles)
+        const canvas = document.getElementById('canvas-background');
+        const ctx = canvas.getContext('2d');
+        
+        let width = canvas.width = window.innerWidth;
+        let height = canvas.height = window.innerHeight;
+        
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+            
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.z = Math.random() * 1000;
+                this.size = Math.random() * 2 + 0.5;
+                this.speedX = (Math.random() - 0.5) * 0.5;
+                this.speedY = (Math.random() - 0.5) * 0.5;
+                this.speedZ = Math.random() * 2 + 1;
+            }
+            
+            update() {
+                this.z -= this.speedZ;
+                if (this.z <= 0) {
+                    this.reset();
+                    this.z = 1000;
+                }
+                
+                const scale = 1000 / (1000 + this.z);
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+                    this.reset();
+                }
+            }
+            
+            draw() {
+                const scale = 1000 / (1000 + this.z);
+                const x = (this.x - width / 2) * scale + width / 2;
+                const y = (this.y - height / 2) * scale + height / 2;
+                const size = this.size * scale;
+                const opacity = (1 - this.z / 1000) * 0.5;
+                
+                ctx.fillStyle = `rgba(99, 102, 241, ${opacity})`;
+                ctx.beginPath();
+                ctx.arc(x, y, size, 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+        
+        const particles = Array.from({ length: 100 }, () => new Particle());
+        
+        function animate() {
+            ctx.fillStyle = 'rgba(10, 10, 10, 0.05)';
+            ctx.fillRect(0, 0, width, height);
+            
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            
+            requestAnimationFrame(animate);
+        }
+        
+        animate();
+        
+        window.addEventListener('resize', () => {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+        });
+
+        // Navbar scroll effect
+        const navbar = document.querySelector('.navbar');
+        let lastScroll = 0;
+        
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+            
+            lastScroll = currentScroll;
+        });
+
         // Intersection Observer for scroll animations
         const observerOptions = {
             threshold: 0.1,
@@ -793,42 +1267,88 @@
         const observer = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
-                    entry.target.classList.add('animate');
+                    entry.target.classList.add('visible');
                 }
             });
         }, observerOptions);
 
-        document.addEventListener('DOMContentLoaded', () => {
-            // Observe elements for animation
-            document.querySelectorAll('.animate-on-scroll').forEach(el => {
-                observer.observe(el);
-            });
+        // Observe all fade-in elements
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
 
-            // Smooth scrolling for anchor links
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const target = document.querySelector(this.getAttribute('href'));
-                    if (target) {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-
-            // Parallax effect for hero background
-            window.addEventListener('scroll', () => {
-                const scrolled = window.pageYOffset;
-                const hero = document.querySelector('.hero');
-                if (hero) {
-                    const rate = scrolled * -0.5;
-                    hero.style.transform = `translateY(${rate}px)`;
+        // Staggered animation for practical cards
+        const practicalCards = document.querySelectorAll('.practical-card');
+        const cardObserver = new IntersectionObserver((entries) => {
+            entries.forEach((entry, index) => {
+                if (entry.isIntersecting) {
+                    setTimeout(() => {
+                        entry.target.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                    }, index * 50);
+                    cardObserver.unobserve(entry.target);
                 }
             });
+        }, { threshold: 0.1 });
 
-            // Add loading animation
+        practicalCards.forEach(card => {
+            cardObserver.observe(card);
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.offsetTop - offset;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // Parallax effect for hero section
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            const heroContent = document.querySelector('.hero-content');
+            const heroGlow = document.querySelector('.hero-glow');
+            
+            if (heroContent && scrolled < window.innerHeight) {
+                heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+                heroContent.style.opacity = 1 - scrolled / 700;
+            }
+            
+            if (heroGlow && scrolled < window.innerHeight) {
+                heroGlow.style.transform = `translate(-50%, -50%) scale(${1 + scrolled * 0.001})`;
+            }
+        });
+
+        // Mouse parallax effect for practical cards
+        document.querySelectorAll('.practical-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = (y - centerY) / 20;
+                const rotateY = (centerX - x) / 20;
+                
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-10px) scale(1.02)`;
+            });
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = '';
+            });
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
             document.body.classList.add('loading');
         });
     </script>
