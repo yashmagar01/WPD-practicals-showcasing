@@ -3,142 +3,834 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WPD Practicals Showcase</title>
+    <title>WPD Practicals Showcase | Yash Ajay Magar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #111111;
+            --bg-tertiary: #1a1a1a;
+            --bg-card: #1e1e1e;
+            --accent-primary: #6366f1;
+            --accent-secondary: #8b5cf6;
+            --accent-tertiary: #ec4899;
+            --text-primary: #ffffff;
+            --text-secondary: #a1a1aa;
+            --text-muted: #71717a;
+            --border-primary: #2a2a2a;
+            --border-secondary: #3a3a3a;
+            --gradient-primary: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #ec4899 100%);
+            --gradient-bg: linear-gradient(135deg, #0a0a0a 0%, #111111 50%, #1a1a1a 100%);
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+            --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+        }
+
+        * {
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            box-sizing: border-box;
         }
-        header {
-            background-color: #333;
-            color: white;
-            padding: 15px;
-            text-align: center;
-            font-size: 24px;
+
+        html {
+            scroll-behavior: smooth;
         }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--gradient-bg);
+            background-attachment: fixed;
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
         }
-        .bio, .practicals {
-            background: white;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.02;
+            pointer-events: none;
+            z-index: -1;
         }
-        .bio {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            gap: 20px;
+
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
         }
-        .bio-content {
-            flex: 1;
-        }
-        .profile-pic {
-            width: 200px;
-            height: 200px;
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: var(--accent-primary);
             border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid #333;
-            flex-shrink: 0;
+            animation: float 20s infinite linear;
         }
+
+        @keyframes float {
+            0% { transform: translateY(100vh) translateX(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at center, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
+            animation: pulse 4s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.05); }
+        }
+
+        .hero-content {
+            text-align: center;
+            z-index: 2;
+            animation: fadeInUp 1s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.2;
+        }
+
+        .hero .subtitle {
+            font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: white;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-xl);
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: var(--text-primary);
+            border: 2px solid var(--border-secondary);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent-primary);
+            color: var(--accent-primary);
+            transform: translateY(-2px);
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 0;
+            background: var(--bg-secondary);
+            position: relative;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 1rem;
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text {
+            animation: slideInLeft 0.8s ease-out 0.2s both;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        .about-text p {
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .profile-card {
+            animation: slideInRight 0.8s ease-out 0.4s both;
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .profile-container {
+            position: relative;
+            border-radius: 1rem;
+            overflow: hidden;
+            background: var(--bg-card);
+            padding: 2rem;
+            box-shadow: var(--shadow-xl);
+        }
+
+        .profile-pic {
+            width: 100%;
+            height: 300px;
+            border-radius: 0.5rem;
+            overflow: hidden;
+            position: relative;
+        }
+
         .profile-pic img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transition: transform 0.3s ease;
         }
-        .practicals ul {
-            list-style: none;
-            padding: 0;
+
+        .profile-container:hover .profile-pic img {
+            transform: scale(1.05);
         }
-        .practicals ul li {
-            background: lightblue;
-            margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
+
+        .profile-info {
+            margin-top: 1.5rem;
         }
-        .practicals ul li a {
+
+        .profile-name {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .profile-details {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .profile-detail {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Practicals Section */
+        .practicals {
+            padding: 8rem 0;
+            background: var(--bg-primary);
+        }
+
+        .practicals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .practical-card {
+            background: var(--bg-card);
+            border-radius: 1rem;
+            padding: 2rem;
+            border: 1px solid var(--border-primary);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        .practical-card:nth-child(1) { animation-delay: 0.1s; }
+        .practical-card:nth-child(2) { animation-delay: 0.2s; }
+        .practical-card:nth-child(3) { animation-delay: 0.3s; }
+        .practical-card:nth-child(4) { animation-delay: 0.4s; }
+        .practical-card:nth-child(5) { animation-delay: 0.5s; }
+
+        .practical-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+        }
+
+        .practical-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-xl);
+            border-color: var(--accent-primary);
+        }
+
+        .practical-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .practical-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 3rem;
+            height: 3rem;
+            background: var(--gradient-primary);
+            border-radius: 50%;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+        }
+
+        .practical-title {
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            line-height: 1.4;
+        }
+
+        .practical-link {
+            color: var(--accent-primary);
             text-decoration: none;
-            color: #333;
-            font-weight: bold;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        footer {
-            background-color: #333;
-            color: white;
+
+        .practical-link:hover {
+            color: var(--accent-tertiary);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--bg-secondary);
+            padding: 4rem 0 2rem;
+            border-top: 1px solid var(--border-primary);
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 3rem;
+            margin-bottom: 3rem;
+        }
+
+        .footer-section h4 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            margin-bottom: 0.5rem;
+            transition: color 0.3s ease;
+        }
+
+        .footer-section a:hover {
+            color: var(--accent-primary);
+        }
+
+        .footer-bottom {
             text-align: center;
-            padding: 20px 0;
-            margin-top: 40px;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-primary);
+            color: var(--text-muted);
         }
-        footer p {
-            margin: 5px 0;
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
         }
-        footer a {
-            color: #fff;
+
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border-primary);
+            border-radius: 50%;
+            color: var(--text-secondary);
             text-decoration: none;
+            transition: all 0.3s ease;
         }
-        footer a:hover {
-            text-decoration: underline;
+
+        .social-link:hover {
+            background: var(--accent-primary);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
+            .hero-cta {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .about-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+                text-align: center;
+            }
+
+            .practicals-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+                text-align: center;
+            }
+        }
+
+        /* Intersection Observer Animations */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s ease-out;
+        }
+
+        .animate-on-scroll.animate {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Loading Animation */
+        .loading {
+            opacity: 0;
+            animation: fadeIn 1s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <header>WPD Practicals Showcase</header>
-    <div class="container">
-        <section class="bio">
-            <div class="bio-content">
-                <h2>About Me</h2>
-                <p><strong>Name:</strong> yash ajay magar</p>
-                <p><strong>Roll No:</strong> 24CO137</p>
-                <p><strong>Course:</strong> Diploma in Computer Engineering</p>
-                <p><strong>College:</strong> Government Polytechnic Awasari</p>
-                <p>This website showcases my practicals for Web Page Designing (WPD).</p>
-            </div>
-            <div class="profile-pic">
-                <img src="yash.jpg" alt="Profile Picture">
-            </div>
-        </section>
-
-        <section class="practicals">
-            <h2>Practicals List</h2>
-            <ul>
-                <li><a href="pr1.html">Practical 01 - Work with Basic HTML</a></li>
-                <li><a href="pr2.html">Practical 02 - Use of Heading Tags in Web Page</a></li>
-                <li><a href="pr3.html">Practical 03 - Work on Paragraph in Web Page</a></li>
-                <li><a href="pr4.html">Practical 04 - Work with Block Level Tags in Web Page</a></li>
-                <li><a href="pr5.html">Practical 05 - Work with Text Level Tags in Web Page</a></li>
-                <li><a href="pr6.html">Practical 06 - Implement the Border Properties in Web Page</a></li>
-                <li><a href="pr7.html">Practical 07 - Use of Special Characters in Web Page</a></li>
-                <li><a href="pr8.html">Practical 08 - Work with Ordered and Unordered Lists</a></li>
-                <li><a href="pr9.html">Practical 09 - Create a Web Page to Use Different Types of Lists</a></li>
-                <li><a href="pr10.html">Practical 10 - Work on HTML Web Page Link</a></li>
-                <li><a href="pr11.html">Practical 11 - Use of Links in Web Page</a></li>
-                <li><a href="pr12.html">Practical 12 - Use of Links with Images in Web Page</a></li>
-                <li><a href="pr13.html">Practical 13 - Use of Colors for Links in Web Page</a></li>
-                <li><a href="pr14.html">Practical 14 - Insert Image on Web Page Foreground and Background</a></li>
-                <li><a href="pr15.html">Practical 15 - Insert Image with Hyperlink and Set Image Width & Height</a></li>
-                <li><a href="pr16.html">Practical 16 - Work with Different Background Properties in Web Page</a></li>
-                <li><a href="pr17.html">Practical 17 - Work on HTML Table in Web Page</a></li>
-                <li><a href="pr18.html">Practical 18 - Create Table Within Table and Insert Images</a></li>
-                <li><a href="pr19.html">Practical 19 - Work on Row and Column Attributes of Table</a></li>
-                <li><a href="#">Practical 20 - These practicals will upload soon. wait for it !</a></li>
-                <li><a href="pr21.html">Practical 21 - Create Forms in HTML</a></li>
-                <li><a href="pr22.html">Practical 22 - Create CSS by applying style sheets</a></li>
-                <li><a href="pr23.html">Practical 23 - Work on RWD</a></li>
-                <li><a href="pr24.html">Practical 24 - Hosting of website</a></li>
-                <li><a href="pr25.html">Practical 25 - Create a website to represent a portfolio</a></li>
-
-            </ul>
-        </section>
+    <div class="noise-overlay"></div>
+    <div class="floating-particles">
+        <div class="particle" style="left: 10%; animation-delay: 0s;"></div>
+        <div class="particle" style="left: 20%; animation-delay: 2s;"></div>
+        <div class="particle" style="left: 30%; animation-delay: 4s;"></div>
+        <div class="particle" style="left: 40%; animation-delay: 6s;"></div>
+        <div class="particle" style="left: 50%; animation-delay: 8s;"></div>
+        <div class="particle" style="left: 60%; animation-delay: 10s;"></div>
+        <div class="particle" style="left: 70%; animation-delay: 12s;"></div>
+        <div class="particle" style="left: 80%; animation-delay: 14s;"></div>
+        <div class="particle" style="left: 90%; animation-delay: 16s;"></div>
     </div>
-    <footer>
-        <p>&copy; 2025 yash ajay magar | WPD Practicals</p>
-        <p>Government Polytechnic Awasari</p>
-        <p><a href="mailto:your.email@example.com">Contact Me</a></p>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>WPD Practicals<br>Showcase</h1>
+                <p class="subtitle">A journey through web development fundamentals<br>by Yash Ajay Magar</p>
+                <div class="hero-cta">
+                    <a href="#practicals" class="btn btn-primary">View Practicals</a>
+                    <a href="#about" class="btn btn-secondary">Learn More</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">About Me</h2>
+                <p class="section-subtitle">Get to know the developer behind these practical projects</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <h3>Crafting Digital Experiences</h3>
+                    <p>Hi, I'm <strong>Yash Ajay Magar</strong>, a Diploma in Computer Engineering student at Government Polytechnic Awasari. I'm passionate about web development and constantly exploring new technologies to create meaningful digital experiences.</p>
+                    <p>This showcase represents my journey through Web Page Designing (WPD) practicals, where I've learned everything from basic HTML structure to advanced CSS styling and responsive design principles.</p>
+                    <p>Each project demonstrates a different aspect of web development, from semantic markup and accessibility to modern styling techniques and user experience considerations.</p>
+                </div>
+                <div class="profile-card">
+                    <div class="profile-container">
+                        <div class="profile-pic">
+                            <img src="yash.jpg" alt="Yash Ajay Magar - Computer Engineering Student">
+                        </div>
+                        <div class="profile-info">
+                            <h4 class="profile-name">Yash Ajay Magar</h4>
+                            <div class="profile-details">
+                                <div class="profile-detail">
+                                    <span>🎓</span>
+                                    <span>Diploma in Computer Engineering</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span>📚</span>
+                                    <span>Government Polytechnic Awasari</span>
+                                </div>
+                                <div class="profile-detail">
+                                    <span>💻</span>
+                                    <span>Roll No: 24CO137</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Practicals Section -->
+    <section class="practicals" id="practicals">
+        <div class="container">
+            <div class="section-header animate-on-scroll">
+                <h2 class="section-title">Practical Projects</h2>
+                <p class="section-subtitle">Explore my collection of web development practicals covering HTML, CSS, and modern web technologies</p>
+            </div>
+            <div class="practicals-grid">
+                <div class="practical-card">
+                    <div class="practical-number">01</div>
+                    <h3 class="practical-title">Work with Basic HTML</h3>
+                    <a href="pr1.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">02</div>
+                    <h3 class="practical-title">Use of Heading Tags in Web Page</h3>
+                    <a href="pr2.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">03</div>
+                    <h3 class="practical-title">Work on Paragraph in Web Page</h3>
+                    <a href="pr3.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">04</div>
+                    <h3 class="practical-title">Work with Block Level Tags in Web Page</h3>
+                    <a href="pr4.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">05</div>
+                    <h3 class="practical-title">Work with Text Level Tags in Web Page</h3>
+                    <a href="pr5.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">06</div>
+                    <h3 class="practical-title">Implement the Border Properties in Web Page</h3>
+                    <a href="pr6.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">07</div>
+                    <h3 class="practical-title">Use of Special Characters in Web Page</h3>
+                    <a href="pr7.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">08</div>
+                    <h3 class="practical-title">Work with Ordered and Unordered Lists</h3>
+                    <a href="pr8.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">09</div>
+                    <h3 class="practical-title">Create a Web Page to Use Different Types of Lists</h3>
+                    <a href="pr9.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">10</div>
+                    <h3 class="practical-title">Work on HTML Web Page Link</h3>
+                    <a href="pr10.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">11</div>
+                    <h3 class="practical-title">Use of Links in Web Page</h3>
+                    <a href="pr11.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">12</div>
+                    <h3 class="practical-title">Use of Links with Images in Web Page</h3>
+                    <a href="pr12.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">13</div>
+                    <h3 class="practical-title">Use of Colors for Links in Web Page</h3>
+                    <a href="pr13.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">14</div>
+                    <h3 class="practical-title">Insert Image on Web Page Foreground and Background</h3>
+                    <a href="pr14.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">15</div>
+                    <h3 class="practical-title">Insert Image with Hyperlink and Set Image Width & Height</h3>
+                    <a href="pr15.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">16</div>
+                    <h3 class="practical-title">Work with Different Background Properties in Web Page</h3>
+                    <a href="pr16.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">17</div>
+                    <h3 class="practical-title">Work on HTML Table in Web Page</h3>
+                    <a href="pr17.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">18</div>
+                    <h3 class="practical-title">Create Table Within Table and Insert Images</h3>
+                    <a href="pr18.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">19</div>
+                    <h3 class="practical-title">Work on Row and Column Attributes of Table</h3>
+                    <a href="pr19.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">20</div>
+                    <h3 class="practical-title">These practicals will upload soon. wait for it !</h3>
+                    <a href="#" class="practical-link">Coming Soon →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">21</div>
+                    <h3 class="practical-title">Create Forms in HTML</h3>
+                    <a href="pr21.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">22</div>
+                    <h3 class="practical-title">Create CSS by applying style sheets</h3>
+                    <a href="pr22.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">23</div>
+                    <h3 class="practical-title">Work on RWD</h3>
+                    <a href="pr23.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">24</div>
+                    <h3 class="practical-title">Hosting of website</h3>
+                    <a href="pr24.html" class="practical-link">View Project →</a>
+                </div>
+                <div class="practical-card">
+                    <div class="practical-number">25</div>
+                    <h3 class="practical-title">Create a website to represent a portfolio</h3>
+                    <a href="pr25.html" class="practical-link">View Project →</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>WPD Practicals</h4>
+                    <p>A comprehensive collection of web development practical projects showcasing HTML, CSS, and modern web technologies.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <p><a href="#about">About Me</a></p>
+                    <p><a href="#practicals">Practicals</a></p>
+                    <p><a href="mailto:yash.magar@example.com">Contact</a></p>
+                </div>
+                <div class="footer-section">
+                    <h4>Connect</h4>
+                    <div class="social-links">
+                        <a href="https://github.com/yashmagar01" class="social-link" title="GitHub">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/>
+                            </svg>
+                        </a>
+                        <a href="#" class="social-link" title="Twitter">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Yash Ajay Magar | Government Polytechnic Awasari</p>
+            </div>
+        </div>
     </footer>
+
+    <script>
+        // Intersection Observer for scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate');
+                }
+            });
+        }, observerOptions);
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Observe elements for animation
+            document.querySelectorAll('.animate-on-scroll').forEach(el => {
+                observer.observe(el);
+            });
+
+            // Smooth scrolling for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                    }
+                });
+            });
+
+            // Parallax effect for hero background
+            window.addEventListener('scroll', () => {
+                const scrolled = window.pageYOffset;
+                const hero = document.querySelector('.hero');
+                if (hero) {
+                    const rate = scrolled * -0.5;
+                    hero.style.transform = `translateY(${rate}px)`;
+                }
+            });
+
+            // Add loading animation
+            document.body.classList.add('loading');
+        });
+    </script>
 </body>
 </html>
